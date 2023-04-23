@@ -54,7 +54,7 @@ let form = ref({
     password: ''
 })
 
- const selected = ref('1')
+ const selected = ref('')
 
  let departments = ref({
      id:'',

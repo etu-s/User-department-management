@@ -55,37 +55,43 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        try {
 
-        $validator = Validator::make($request->all(), [
-            'fullname' => 'required|string|regex:/^[A-Za-zሀ-ፐ_]+$/|max:40',
-            'email' => 'required|max:40',
-            'password' => 'required|max:40',
-            'department_id' => 'required',
-        ], [
-            'fullname.required' => ' full name is required.',
-            'fullname.regex' => ' full name should be alphabate and under score only.',
-            'email.required' => 'email is required.',
-            'password.required' => 'password is required.',
-            'department_id.required' => 'department is required.',
-        ]);
+                $validator = Validator::make($request->all(), [
+                    'fullname' => 'required|string|regex:/^[A-Za-zሀ-ፐ_]+$/|max:40',
+                    'email' => 'required|max:40',
+                    'password' => 'required|max:40',
+                    'department_id' => 'required',
+                ], [
+                    'fullname.required' => ' full name is required.',
+                    'fullname.regex' => ' full name should be alphabate and under score only.',
+                    'email.required' => 'email is required.',
+                    'password.required' => 'password is required.',
+                    'department_id.required' => 'department is required.',
+                ]);
+                
+                if ($validator->fails()) {
+                
+                    return response()->json(['errors' => $validator->errors()->all()],400);
+                }
+
+                $password = Hash::make($request->password);
+                
+                $user = new User();
+
+                $user->fullname = $request->fullname;
+                $user->email = $request->email;
+                $user->password = $password;
+                $user->save();
+
+                $department = $request->department_id;
         
-        if ($validator->fails()) {
-        
-            return response()->json(['errors' => $validator->errors()->all()],400);
+                $user->departments()->attach($department);
+
+            } catch (Exception $exception) {
+                
+                return response()->json(['errors' => 'Unexpected error occurred while trying to process your request.'],500);
         }
-
-        $password = Hash::make($request->password);
-        
-        $user = new User();
-
-        $user->fullname = $request->fullname;
-        $user->email = $request->email;
-        $user->password = $password;
-        $user->save();
-
-        $department = $request->department_id;
- 
-        $user->departments()->attach($department);
     }
 
     /**
@@ -117,36 +123,42 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        try {
 
-        $validator = Validator::make($request->all(), [
-            'fullname' => 'required|string|regex:/^[A-Za-zሀ-ፐ_]+$/|max:40',
-            'email' => 'required|max:40',
-            'password' => 'required|max:40',
-            'department_id' => 'required',
-        ], [
-            'fullname.required' => ' full name is required.',
-            'fullname.regex' => ' full name should be alphabate and under score only.',
-            'email.required' => 'email is required.',
-            'password.required' => 'password is required.',
-            'department_id.required' => 'department is required.',
-        ]);
+                $validator = Validator::make($request->all(), [
+                    'fullname' => 'required|string|regex:/^[A-Za-zሀ-ፐ_]+$/|max:40',
+                    'email' => 'required|max:40',
+                    'password' => 'required|max:40',
+                    'department_id' => 'required',
+                ], [
+                    'fullname.required' => ' full name is required.',
+                    'fullname.regex' => ' full name should be alphabate and under score only.',
+                    'email.required' => 'email is required.',
+                    'password.required' => 'password is required.',
+                    'department_id.required' => 'department is required.',
+                ]);
+                
+                if ($validator->fails()) {
+                
+                    return response()->json(['errors' => $validator->errors()->all()],400);
+                }
+                
+                $user = User::find($id);
+
+                $user->fullname = $request->fullname;
+                $user->email = $request->email;
+                $user->password = $request->password;
+                $user->save();
+
+                $department = $request->department_id;
         
-        if ($validator->fails()) {
-        
-            return response()->json(['errors' => $validator->errors()->all()],400);
+                $user->departments()->detach();
+                $user->departments()->attach($department);
+
+            } catch (Exception $exception) {
+                        
+                return response()->json(['errors' => 'Unexpected error occurred while trying to process your request.'],500);
         }
-        
-        $user = User::find($id);
-
-        $user->fullname = $request->fullname;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->save();
-
-        $department = $request->department_id;
- 
-        $user->departments()->detach();
-        $user->departments()->attach($department);
     }
 
     /**
