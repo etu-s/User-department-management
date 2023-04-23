@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// we add our view route here
+Route::get('/{pathMatch}', function(){
+    return view('welcome');
+})->where('pathMatch',".*");
