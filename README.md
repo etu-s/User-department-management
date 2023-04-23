@@ -1,5 +1,5 @@
 1. Run in terminal
-
+    $ git clone https://github.com/etu-s/User-department-management.git
 2. Copy .env.example to .env file and set database information
 3. Run 
     $ composer install
