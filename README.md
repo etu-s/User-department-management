@@ -2,6 +2,7 @@
     $ git clone https://github.com/etu-s/User-department-management.git
 2. Copy .env.example to .env file and set database information
 3. Run 
+
     $ composer install
     $ npm install
     $ npm install vue-loader@next vue@next vue-router@next --force
@@ -12,6 +13,7 @@
     $ php artisan migrate
     $ npm run dev
     $ php artisan serve
+    
 
 Test case and test result for a User and Department CRUD in Laravel:
 
