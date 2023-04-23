@@ -4,14 +4,23 @@
 3. Run 
 
     $ composer install
+    
     $ npm install
+    
     $ npm install vue-loader@next vue@next vue-router@next --force
+    
     $ npm install @vitejs/plugin-vue --force --save-dev
+    
     $ npm install sweetalert2
+    
     $ cp .env.example .env
+    
     $ php artisan key:generate
+    
     $ php artisan migrate
+    
     $ npm run dev
+    
     $ php artisan serve
     
 
